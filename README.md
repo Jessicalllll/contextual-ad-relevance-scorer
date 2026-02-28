@@ -197,7 +197,3 @@ In a real contextual ad platform at scale, this pipeline would extend to:
 | No feedback loop | Can't learn from engagement signals |
 
 ---
-
-## Author
-
-**Jessica Guo**  
