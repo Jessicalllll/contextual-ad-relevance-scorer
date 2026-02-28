@@ -2,9 +2,6 @@
 
 **Matching ads to webpage content using TF-IDF and Cosine Similarity — zero user data required.**
 
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://python.org)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
-
 ---
 
 ## What This Project Demonstrates
