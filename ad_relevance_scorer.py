@@ -337,7 +337,7 @@ class ContextualAdScorer:
         tokenized_ads = [preprocess(ad['content']) for ad in ads]
         self.ad_vectors = self.vectorizer.fit_transform(tokenized_ads)
         self.is_fitted = True
-        print(f"✅ Fitted scorer on {len(ads)} ads | Vocabulary size: {len(self.vectorizer.vocabulary):,} terms")
+        print(f"Fitted scorer on {len(ads)} ads | Vocabulary size: {len(self.vectorizer.vocabulary):,} terms")
         return self
 
     def score(self, article: dict, top_k: int = 5) -> pd.DataFrame:
@@ -438,7 +438,7 @@ def evaluate_relevance(results: dict) -> pd.DataFrame:
 def print_results(article: dict, results: pd.DataFrame):
     """Pretty print results to console."""
     print("\n" + "=" * 70)
-    print(f"📰 Article: {article['title']}")
+    print(f"Article: {article['title']}")
     print("=" * 70)
     print(f"{'Rank':<6} {'Brand':<20} {'Category':<22} {'Score':<10} {'Keywords'}")
     print("-" * 70)
@@ -486,7 +486,7 @@ def generate_html_report(all_results: dict, eval_df: pd.DataFrame) -> str:
     </style>
 </head>
 <body>
-    <h1>🎯 Contextual Ad Relevance Scorer</h1>
+    <h1>Contextual Ad Relevance Scorer</h1>
     <p><strong>Author:</strong> Jessica Guo &nbsp;|&nbsp; 
        <strong>Method:</strong> TF-IDF + Cosine Similarity &nbsp;|&nbsp;
        <strong>Privacy:</strong> Zero user data — content-only matching</p>
@@ -497,7 +497,7 @@ def generate_html_report(all_results: dict, eval_df: pd.DataFrame) -> str:
         No cookies. No user tracking. Just content intelligence.
     </div>
 
-    <h2>📊 Summary Evaluation</h2>
+    <h2>Summary Evaluation</h2>
     <table>
         <tr>
             <th>Article</th>
@@ -520,13 +520,13 @@ def generate_html_report(all_results: dict, eval_df: pd.DataFrame) -> str:
 
     html += """
     </table>
-    <h2>🔍 Detailed Results by Article</h2>
+    <h2>Detailed Results by Article</h2>
     """
 
     for article_id, data in all_results.items():
         html += f"""
     <div class="article-block">
-        <h3>📰 {data['article_title']}</h3>
+        <h3>{data['article_title']}</h3>
         <table>
             <tr>
                 <th>Rank</th><th>Brand</th><th>Category</th>
@@ -549,7 +549,7 @@ def generate_html_report(all_results: dict, eval_df: pd.DataFrame) -> str:
     </div>"""
 
     html += """
-    <h2>⚙️ How It Works</h2>
+    <h2>How It Works</h2>
     <ol>
         <li><strong>Preprocessing:</strong> Article and ad text are tokenized, 
             lowercased, and stop words removed</li>
@@ -561,7 +561,7 @@ def generate_html_report(all_results: dict, eval_df: pd.DataFrame) -> str:
             returned with explainable keyword matches</li>
     </ol>
     
-    <h2>🚀 Production Extensions</h2>
+    <h2>Production Extensions</h2>
     <p>In a real contextual ad platform like GumGum, this pipeline would extend to:</p>
     <ul>
         <li>Transformer-based embeddings (BERT, sentence-transformers) for deeper 
@@ -588,7 +588,7 @@ def generate_html_report(all_results: dict, eval_df: pd.DataFrame) -> str:
 # ─────────────────────────────────────────────
 
 def main():
-    print("\n🎯 Contextual Ad Relevance Scorer")
+    print("\nContextual Ad Relevance Scorer")
     print("=" * 70)
     print("Matching ads to articles using TF-IDF + Cosine Similarity")
     print("Zero user data — content-only matching\n")
@@ -598,7 +598,7 @@ def main():
     scorer.fit(AD_INVENTORY)
 
     # Score all articles
-    print(f"\n📰 Scoring {len(ARTICLES)} articles against {len(AD_INVENTORY)} ads...\n")
+    print(f"\nScoring {len(ARTICLES)} articles against {len(AD_INVENTORY)} ads...\n")
     all_results = scorer.score_all_articles(ARTICLES, top_k=3)
 
     # Print results
@@ -607,7 +607,7 @@ def main():
         print_results(article, results)
 
     # Evaluation summary
-    print("\n\n📊 EVALUATION SUMMARY")
+    print("\n\nEVALUATION SUMMARY")
     print("=" * 70)
     eval_df = evaluate_relevance(all_results)
     print(eval_df.to_string(index=False))
@@ -622,14 +622,14 @@ def main():
 
     with open('results.json', 'w') as f:
         json.dump(json_output, f, indent=2)
-    print("\n✅ Results saved to results.json")
+    print("\nResults saved to results.json")
 
     # Generate HTML report
     html_report = generate_html_report(all_results, eval_df)
     with open('report.html', 'w') as f:
         f.write(html_report)
-    print("✅ HTML report saved to report.html")
-    print("\n🚀 Open report.html in your browser to see the full visualization!")
+    print("HTML report saved to report.html")
+    print("\nOpen report.html in your browser to see the full visualization!")
 
 
 if __name__ == "__main__":

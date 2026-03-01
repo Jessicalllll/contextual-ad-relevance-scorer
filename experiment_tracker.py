@@ -5,7 +5,7 @@ A lightweight experiment tracking system that logs model runs,
 parameters, and metrics — simulating what MLflow does in production.
 
 In production you'd use MLflow or Weights & Biases.
-This demonstrates the CONCEPT and WHY those tools exist.
+This just demonstrates the concept and why those tools exist.
 
 Every model run is logged with:
 - Run ID and timestamp
@@ -74,7 +74,7 @@ class ExperimentTracker:
             "metrics": {},
             "artifacts": {}
         }
-        print(f"🚀 Started run: {run_id} — '{run_name}'")
+        print(f"Started run: {run_id} — '{run_name}'")
         return run_id
 
     def log_metric(self, key: str, value: float):
@@ -145,7 +145,7 @@ class ExperimentTracker:
 
     def print_summary(self):
         """Print full summary of all runs."""
-        print(f"\n📋 Experiment Log Summary")
+        print(f"\nExperiment Log Summary")
         print(f"Total runs: {len(self.runs)}")
         completed = [r for r in self.runs if r['status'] == 'COMPLETED']
         print(f"Completed: {len(completed)}")

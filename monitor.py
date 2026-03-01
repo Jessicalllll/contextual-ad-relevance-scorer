@@ -15,7 +15,7 @@ This is the concept behind tools like:
 - Weights & Biases (W&B) model monitoring
 - Evidently AI for drift detection
 - Grafana dashboards for operational metrics
-- Astro Observe (what Brendan uses at GumGum) for pipeline observability
+- Astro Observe for pipeline observability
 """
 
 import json

@@ -11,8 +11,6 @@ Week 4: Post-retraining — model retrained on new data, performance restored
 This demonstrates the full ML lifecycle:
     Deploy → Monitor → Detect Drift → Retrain → Redeploy
 
-Which is exactly what Brendan's team does at GumGum with
-Airflow, Databricks, and Astro Observe at production scale.
 """
 
 import re
@@ -176,7 +174,7 @@ def retrain_scorer(articles, ads):
 
 def main():
     print("=" * 65)
-    print("🏭 PRODUCTION ML LIFECYCLE SIMULATION")
+    print("PRODUCTION ML LIFECYCLE SIMULATION")
     print("Contextual Ad Relevance Scorer — 4-Week MLOps Demo")
     print("=" * 65)
     print("\nSimulating: Deploy → Monitor → Detect Drift → Retrain → Redeploy")
@@ -392,7 +390,7 @@ def main():
 
     print("\nSimulation complete!")
     print("   Files saved: experiment_log.json, monitoring_log.json")
-    print("\n💡 Key MLOps concepts demonstrated:")
+    print("\nKey MLOps concepts demonstrated:")
     print("   • Experiment tracking with versioned runs")
     print("   • Score distribution drift detection")
     print("   • Out-of-vocabulary (data) drift detection")
