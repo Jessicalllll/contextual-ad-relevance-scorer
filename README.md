@@ -1,196 +1,79 @@
 # Contextual Ad Relevance Scorer
+A small project exploring how contextual signals from webpage content can be used to rank ads by relevance without relying on user-level tracking.
+The goal is to simulate a simple contextual advertising system similar to what privacy-first ad platforms use.
+## Idea
+Instead of using user behavioral data, this project focuses on matching the **content of a page** with the **content of an ad**.
+Example:
 
-**Matching ads to webpage content using TF-IDF and Cosine Similarity — zero user data required.**
+Page content:  
+"Best running shoes for marathon training"
 
----
+Relevant ad:  
+"Lightweight running shoes with extra cushioning"
+The system scores how well an ad matches the page context.
+## Approach
+The current prototype uses a simple NLP pipeline:
+1. Text preprocessing
+2. TF-IDF vectorization
+3. Cosine similarity scoring
+4. Ranking ads by contextual relevance
+This is obviously a simplified model, but it demonstrates the core idea behind contextual ad targeting.
+## Project Structure
+contextual-ad-relevance-scorer
+│
+
+├── ad_relevance_scorer.py # main scoring logic
+
+├── experiment_tracker.py # simple experiment logging
+
+├── monitor.py # basic monitoring simulation
+
+├── simulate_production.py # simulate a production scoring pipeline
+
+└── README.md
+## Example Workflow
+1. Input page content
+2. Extract keywords / vectorize text
+3. Compare with candidate ads
+4. Compute similarity score
+5. Rank ads by score
+   Page: “camping gear for winter trips”
+   
+   Ads scored:
+   
+   Ad A: “winter sleeping bags” → 0.82
+   
+   Ad B: “beach umbrellas” → 0.12
+   
+   Ad C: “camping tents for cold weather” → 0.77
 
 ## What This Project Demonstrates
 
-This project builds a **contextual advertising engine** that matches ads to webpage content based on semantic similarity — without using any personal user data or cookies.
+This project was mainly built to explore a few concepts relevant to ad-tech systems:
 
-This is the core ML challenge in contextual advertising: **how do you serve relevant ads using only the content of the page, not who the user is?**
+- Contextual ad targeting
 
-As third-party cookies become obsolete, contextual targeting is emerging as the privacy-first alternative to behavioral targeting. This project explores that problem from first principles.
+- Lightweight relevance scoring
 
----
+- Basic experiment logging
 
-## Results
+- Monitoring signals for model behavior
 
-The model correctly identifies contextually relevant ads across four distinct article domains:
+## Possible Improvements
 
-| Article Topic | Top Matched Ad | Relevance Score |
-|--------------|----------------|-----------------|
-| Electric Vehicles & Battery Tech | Tesla | 0.3643 |
-| Healthy Meal Prep | HelloFresh | 0.4405 |
-| ML in Finance & Algorithmic Trading | Bloomberg Terminal | 0.5703 |
-| Trail Running Guide | Salomon | 0.5074 |
+Some directions that could make the system more realistic:
 
----
+- Using transformer embeddings instead of TF-IDF
 
-## Pipeline
+- Adding click-through-rate prediction
 
-```
-Article Content
-      │
-      ▼
-  Preprocessing
-  (tokenize, remove stopwords)
-      │
-      ▼
-  TF-IDF Vectorization ◄──── Ad Inventory
-  (fit on ad corpus,
-   transform article)
-      │
-      ▼
-  Cosine Similarity
-  (article vector vs each ad vector)
-      │
-      ▼
-  Ranked Ad Results
-  + Explainable Keywords
-```
+- Training a learning-to-rank model
 
----
+- Incorporating real ad inventory data
 
-## Key Design Choices
+## Why I Built This
 
-| Choice | Reason |
-|--------|--------|
-| **TF-IDF** | Upweights rare, domain-specific terms. 'algorithmic' matters more than 'good' |
-| **Cosine Similarity** | Length-invariant — short ads match long articles fairly |
-| **From-scratch implementation** | Shows mathematical understanding, not just API calls |
-| **Keyword explainability** | Every match has attribution — critical for ad quality review |
+While preparing for interviews in ad tech, I wanted to better understand how contextual ad systems work and how relevance scoring might be implemented in practice.
 
----
-
-## Project Structure
-
-```
-contextual_ad_relevance/
-│
-├── ad_relevance_scorer.py          # Core matching engine (TF-IDF + cosine similarity)
-├── monitor.py                      # Drift detection & alerting system
-├── experiment_tracker.py           # Lightweight experiment tracking (MLflow concept)
-├── simulate_production.py          # Full 4-week MLOps lifecycle simulation
-├── contextual_ad_relevance.ipynb   # Jupyter notebook with full walkthrough
-├── experiment_log.json             # Versioned model run history
-├── monitoring_log.json             # Health check history
-├── results.json                    # Scoring output
-├── report.html                     # HTML visualization
-└── README.md
-```
-
----
-
-## Quick Start
-
-```bash
-# Clone the repo
-git clone https://github.com/Jessicalllll/contextual-ad-relevance
-cd contextual-ad-relevance
-
-# Install dependencies
-pip install pandas
-
-# Run the core scorer
-python ad_relevance_scorer.py
-
-# Run the full MLOps simulation (deploy → monitor → drift → retrain)
-python simulate_production.py
-
-# Open the HTML report
-open report.html
-
-# Or explore the notebook
-jupyter notebook contextual_ad_relevance.ipynb
-```
-
----
-
-## How It Works
-
-### 1. Text Preprocessing
-Article and ad text are tokenized, lowercased, and cleaned. Stop words (the, and, is...) are removed since they carry no semantic signal.
-
-### 2. TF-IDF Vectorization
-Each document is converted to a weighted term vector. Terms that appear frequently in one document but rarely across the corpus get higher weight — making domain-specific vocabulary more important than common words.
-
-$$\text{TF-IDF}(t, d) = \frac{\text{count}(t, d)}{|d|} \times \log\left(\frac{N+1}{df(t)+1}\right) + 1$$
-
-### 3. Cosine Similarity
-The angle between the article vector and each ad vector measures semantic overlap. Length-invariant — a short ad and long article can still match well.
-
-$$\text{similarity}(A, B) = \frac{A \cdot B}{\|A\| \cdot \|B\|}$$
-
-### 4. Ranking & Explainability
-Ads are sorted by relevance score. For each match, the top contributing keywords are surfaced — making the model interpretable and auditable.
-
----
-
-## MLOps Layer
-
-Beyond the core matching engine, this project includes a full monitoring and experiment tracking system:
-
-### Experiment Tracker (`experiment_tracker.py`)
-Lightweight experiment logging that tracks every model run with parameters, metrics, and artifacts — demonstrating the concept behind MLflow:
-- Versioned run IDs with timestamps
-- Parameter logging (vectorizer type, corpus size, smoothing)
-- Metric logging (avg score, top score, vocabulary size)
-- Best run selection for deployment decisions
-
-### Drift Detection & Monitoring (`monitor.py`)
-Three-dimensional monitoring system that runs on a schedule to catch model degradation:
-
-| Monitor | What It Detects | Alert Threshold |
-|---------|----------------|-----------------|
-| Score Distribution Drift | Avg relevance dropping from baseline | Warning: 10% drop, Critical: 20% drop |
-| Vocabulary Drift (OOV) | New articles using unknown terms | Warning: 15% OOV, Critical: 30% OOV |
-| Coverage Monitoring | % articles with valid ad match | Warning: <80%, Critical: <60% |
-
-### Production Simulation (`simulate_production.py`)
-Full 4-week MLOps lifecycle demonstration:
-
-```
-Week 1: Baseline deployment    → avg score 0.4706  (healthy)
-Week 2: Slight topic drift     → avg score 0.3572  (warning)
-Week 3: Significant drift      → avg score 0.2605  (critical → retrain triggered)
-Week 4: Post-retraining        → avg score 0.4417  (recovered)
-```
-
-This mirrors the production MLOps workflow at scale:
-- **Airflow** schedules monitoring DAGs on a cadence
-- **Alerts** route to PagerDuty/Slack based on severity
-- **Retraining** is triggered automatically when thresholds are breached
-- **Model versioning** tracks v1.0 → v2.0 with full audit trail
-
-## Evaluation Metrics
-
-- **Top Score**: Model confidence in the best match
-- **Avg Top-3 Score**: Overall recommendation quality
-- **Discrimination Gap**: Difference between #1 and #3 score — higher = more decisive model
-
----
-
-## Production Extensions
-
-In a real contextual ad platform at scale, this pipeline would extend to:
-
-1. **Transformer embeddings** (BERT, sentence-transformers) for deeper semantic understanding — synonyms handled naturally
-2. **Real-time inference** with sub-100ms latency for RTB auction integration
-3. **Distributed processing** with Apache Spark for billions of daily page impressions
-4. **A/B testing framework** to compare contextual vs behavioral targeting baselines
-5. **MLOps pipeline** with drift monitoring, automated retraining, and model versioning
-6. **Brand safety layer** — prevent ads from appearing next to conflicting content
-
----
-
-## Limitations
-
-| Limitation | Impact |
-|-----------|--------|
-| TF-IDF misses semantic meaning | 'car' and 'automobile' scored independently |
-| No synonym handling | Vocabulary-dependent matching |
-| Static ad inventory | No real-time ad updates in this demo |
-| No feedback loop | Can't learn from engagement signals |
-
----
+This project is a simplified prototype to explore those ideas.
+ 
