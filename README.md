@@ -1,6 +1,12 @@
 # Contextual Ad Relevance Scorer
 A small project exploring how contextual signals from webpage content can be used to rank ads by relevance without relying on user-level tracking.
 The goal is to simulate a simple contextual advertising system similar to what privacy-first ad platforms use.
+
+## System Overview
+A simplified pipeline for contextual ad scoring:
+
+Page Content → NLP Processing → TF-IDF Vector → Similarity Scoring → Ad Ranking
+
 ## Idea
 Instead of using user behavioral data, this project focuses on matching the **content of a page** with the **content of an ad**.
 Example:
